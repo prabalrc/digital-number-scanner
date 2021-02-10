@@ -1,64 +1,35 @@
 package digital.number.scanner.service;
 
-import java.util.Map;
+import static digital.number.scanner.service.ApplicationConstants.COLUMNS;
+import static digital.number.scanner.service.ApplicationConstants.ROWS;
 
 public class SymbolReader {
 
+    public void readSymbol(char[][][] characterMatrix, String[] stringArray, int characterIndex, int matrixNumber) {
 
-    private static final char DOT = '.';
-    private static final char PIPE = '|';
-    private static final char UNDERSCORE = '_';
-
-    public static void readSymbol(char[][][] charArray) {
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < charArray.length; i++) {
-            if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == DOT) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == DOT) && (charArray[i][1][1] == DOT) && (charArray[i][1][2] == DOT)
-                    && (charArray[i][2][0] == DOT) && (charArray[i][2][1] == DOT) && (charArray[i][2][2] == DOT)) {
-                sb.append("");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == DOT) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == DOT) && (charArray[i][1][1] == DOT) && (charArray[i][1][2] == PIPE)
-                    && (charArray[i][2][0] == DOT) && (charArray[i][2][1] == DOT) && (charArray[i][2][2] == PIPE)) {
-                sb.append("1");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == UNDERSCORE) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == DOT) && (charArray[i][1][1] == UNDERSCORE) && (charArray[i][1][2] == PIPE)
-                    && (charArray[i][2][0] == PIPE) && (charArray[i][2][1] == UNDERSCORE) && (charArray[i][2][2] == DOT)) {
-                sb.append("2");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == UNDERSCORE) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == DOT) && (charArray[i][1][1] == UNDERSCORE) && (charArray[i][1][2] == PIPE)
-                    && (charArray[i][2][0] == DOT) && (charArray[i][2][1] == UNDERSCORE) && (charArray[i][2][2] == PIPE)) {
-                sb.append("3");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == DOT) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == PIPE) && (charArray[i][1][1] == UNDERSCORE) && (charArray[i][1][2] == PIPE)
-                    && (charArray[i][2][0] == DOT) && (charArray[i][2][1] == DOT) && (charArray[i][2][2] == PIPE)) {
-                sb.append("4");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == UNDERSCORE) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == PIPE) && (charArray[i][1][1] == UNDERSCORE) && (charArray[i][1][2] == DOT)
-                    && (charArray[i][2][0] == DOT) && (charArray[i][2][1] == UNDERSCORE) && (charArray[i][2][2] == PIPE)) {
-                sb.append("5");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == UNDERSCORE) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == PIPE) && (charArray[i][1][1] == UNDERSCORE) && (charArray[i][1][2] == DOT)
-                    && (charArray[i][2][0] == PIPE) && (charArray[i][2][1] == UNDERSCORE) && (charArray[i][2][2] == PIPE)) {
-                sb.append("6");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == UNDERSCORE) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == DOT) && (charArray[i][1][1] == DOT) && (charArray[i][1][2] == PIPE)
-                    && (charArray[i][2][0] == DOT) && (charArray[i][2][1] == DOT) && (charArray[i][2][2] == PIPE)) {
-                sb.append("7");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == UNDERSCORE) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == PIPE) && (charArray[i][1][1] == UNDERSCORE) && (charArray[i][1][2] == PIPE)
-                    && (charArray[i][2][0] == PIPE) && (charArray[i][2][1] == UNDERSCORE) && (charArray[i][2][2] == PIPE)) {
-                sb.append("8");
-            } else if ((charArray[i][0][0] == DOT) && (charArray[i][0][1] == UNDERSCORE) && (charArray[i][0][2] == DOT)
-                    && (charArray[i][1][0] == PIPE) && (charArray[i][1][1] == UNDERSCORE) && (charArray[i][1][2] == PIPE)
-                    && (charArray[i][2][0] == DOT) && (charArray[i][2][1] == UNDERSCORE) && (charArray[i][2][2] == PIPE)) {
-                sb.append("9");
-            } else {
-                sb.append("?");
+        for (int rowNumber = 0; rowNumber < ROWS; rowNumber++) {
+            char[] temporarySlice = getArraySlice(stringArray[rowNumber].toCharArray(), characterIndex, characterIndex + 3);
+            for (int columnNumber = 0; columnNumber < COLUMNS; columnNumber++) {
+                characterMatrix[matrixNumber][rowNumber][columnNumber] = temporarySlice[columnNumber];
             }
         }
-        if (sb.toString().contains("?")) sb.append("ILL");
-        System.out.println(sb.toString());
+    }
 
+    /**
+     * Given an array of characters, return a slice of the array based
+     * on the beginIndex and endIndex
+     *
+     * @param charArray  array of characters
+     * @param beginIndex index from where the slice is desired
+     * @param endIndex   index up to which the slice is desired
+     * @return the sliced array
+     */
+    private char[] getArraySlice(char[] charArray, int beginIndex, int endIndex) {
+
+        char[] arraySlice = new char[endIndex - beginIndex];
+        for (int sliceIndex = 0; sliceIndex < arraySlice.length; sliceIndex++) {
+            arraySlice[sliceIndex] = charArray[beginIndex + sliceIndex];
+        }
+        return arraySlice;
     }
 }

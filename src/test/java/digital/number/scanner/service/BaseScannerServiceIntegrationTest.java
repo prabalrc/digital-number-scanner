@@ -41,7 +41,7 @@ public abstract class BaseScannerServiceIntegrationTest {
     @Parameterized.Parameter
     public String inputFileName;
 
-    protected abstract List<String> performScanning(final String inputFilePath);
+    protected abstract List<String> performScanning(final String inputFilePath) throws IOException;
 
     @Test
     public final void testScanner() throws IOException {

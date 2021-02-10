@@ -1,31 +1,41 @@
 package digital.number.scanner.service;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class FileParser {
 
-    public static void main(String[] args) {
-
+    /**
+     *
+     * @param inputFilePath
+     */
+    protected boolean parseFile(String inputFilePath) {
+        boolean result = true;
         try {
-            File inputFileHandle = new File("src/test/resources/testInput/example");
-            // Handle is valid file and file exists
+            File inputFileHandle = new File(inputFilePath);
+
+            // Is valid file and file exists
             if (!inputFileHandle.exists() && !inputFileHandle.isFile()) {
                 throw new FileNotFoundException("The input file is not found");
             }
 
             try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFileHandle))) {
-                Chunker.breakInput(bufferedReader);
+                Chunker chunker = new Chunker();
+                chunker.breakInput(bufferedReader, inputFileHandle.getName());
 
             } catch (Exception ex) {
-
-            } finally {
-
+                ScannerService.printOnConsole(ex.getMessage());
+                result = false;
             }
-
         } catch (FileNotFoundException fileNotFoundException) {
-            System.out.println("The application exited because: " + fileNotFoundException.getMessage());
-        } catch (Exception ioException) {
-            ioException.printStackTrace();
+            ScannerService.printOnConsole("The application exited because: " + fileNotFoundException.getMessage());
+            result = false;
+        } catch (Exception exception) {
+            ScannerService.printOnConsole("The application exited because: " + exception.getMessage());
+            result = false;
         }
+        return result;
     }
 }

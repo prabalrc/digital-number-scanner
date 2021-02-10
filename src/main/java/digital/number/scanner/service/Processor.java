@@ -1,38 +1,37 @@
 package digital.number.scanner.service;
 
+import java.io.IOException;
+
+import static digital.number.scanner.service.ApplicationConstants.*;
+
 public class Processor {
 
-    static void process(String[] stringArray) {
-        System.out.println("\nArray content\n");
-        int lineLength = stringArray.length;
+    public void processInput(String[] stringArray, String fileName) {
 
-        for(int lineIdx=0; lineIdx < lineLength; lineIdx++) {
-            System.out.println("Line " + (lineIdx+1) + " = " + stringArray[lineIdx]);
+        SymbolReader symbolReader = new SymbolReader();
+        SymbolMatcher symbolMatcher = new SymbolMatcher();
+        OutputWriter outputWriter = new OutputWriter();
+
+        ScannerService.printOnConsole("\nArray content\n");
+        for (int lineIndex = 0; lineIndex < stringArray.length; lineIndex++) {
+            ScannerService.printOnConsole("Line " + (lineIndex + 1) + " = " + stringArray[lineIndex]);
         }
 
-        char[][][] ca = new char[9][3][3];
-        int charIdx = 0;
-        for(int k=0; k<9; k++) {
-            for (int j=0; j<3; j++) {
-                for (int i=0; i<3; i++) {
-                    ca[k][j][i] = getArraySlice(stringArray[j].toCharArray(), charIdx, charIdx + 3)[i];
-                }
-            }
-            charIdx = charIdx + 3;
+        char[][][] characterMatrix = new char[MAX_DIGITS][ROWS][COLUMNS];
+        int characterIndex = 0;
+        for (int matrixNumber = 0; matrixNumber < MAX_DIGITS; matrixNumber++) {
+            symbolReader.readSymbol(characterMatrix, stringArray, characterIndex, matrixNumber);
+            characterIndex = characterIndex + COLUMNS;
         }
-        SymbolReader.readSymbol(ca);
+
+        try {
+            outputWriter.write(symbolMatcher.matchSymbol(characterMatrix), fileName);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
 
     }
 
-    public static char[] getArraySlice(char[] arr, int start, int end) {
 
-        char[] slice = new char[end-start];
-        // Copy elements of arr to slice
-        for (int i = 0; i < slice.length; i++) {
-            slice[i] = arr[start + i];
-        }
 
-        // return the slice
-        return slice;
-    }
 }
