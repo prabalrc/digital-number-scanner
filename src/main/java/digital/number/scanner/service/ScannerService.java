@@ -4,11 +4,11 @@ import static digital.number.scanner.service.ApplicationConstants.PRINT_ON_CONSO
 
 public class ScannerService {
 
-    public static void main(String[] args) {
-
-        scanDigitalNumber("src/test/resources/testInput/example");
-
-    }
+//    public static void main(String[] args) {
+//
+//        scanDigitalNumber("src/test/resources/testInput/example");
+//
+//    }
 
     public static void printOnConsole(String toPrint) {
 
@@ -17,7 +17,11 @@ public class ScannerService {
         }
     }
 
-    protected static void scanDigitalNumber(String inputFilePath) {
+    /**
+     * Entry point of the application
+     * @param inputFilePath
+     */
+    protected void scanDigitalNumber(String inputFilePath) {
 
         FileParser fileParser = new FileParser();
         fileParser.parseFile(inputFilePath);

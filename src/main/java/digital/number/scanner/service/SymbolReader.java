@@ -5,6 +5,14 @@ import static digital.number.scanner.service.ApplicationConstants.ROWS;
 
 public class SymbolReader {
 
+    /**
+     * Read all the character and build the matrix of characters
+     *
+     * @param characterMatrix matrix to be created
+     * @param stringArray array of strings formed by each line
+     * @param characterIndex the index from which to start reading
+     * @param matrixNumber
+     */
     public void readSymbol(char[][][] characterMatrix, String[] stringArray, int characterIndex, int matrixNumber) {
 
         for (int rowNumber = 0; rowNumber < ROWS; rowNumber++) {
